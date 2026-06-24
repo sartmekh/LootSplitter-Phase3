@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Matvii K.">
+    <title>Dungeon Loot Splitter</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main>
+        <header class="header">
+            <h1>Dungeon Loot Splitter.</h1>
+        </header>
+
+        <section class="panel">
+            <h2>Party Setup</h2>
+            <label for="sizeInput">Number of Party Members:</label>
+            <input type="number" id="sizeInput" class="party" min="1" step="1" value="1" required>
+            <p id="partyMessage"></p>
+        </section>
+
+        <section class="panel">
+            <h2>Add Loot</h2>
+
+            <label for="lootName">Loot Name:</label>
+            <input type="text" id="lootName" required>
+            
+            <label for="lootValue">Loot Value:</label>
+            <input type="number" id="lootValue" min="0" step="0.01" required>
+
+            <label for="lootQuantity">Quantity:</label>
+            <input type="number" id="lootQuantity" min="1" step="1" value="1" required>
+
+            <button id="lootBtn">Add Loot</button>
+            <p id="lootMessage"></p>
+        </section>
+
+        <section class="panel">
+            <h2>Loot List</h2>
+            <div id="noLootMessage">No loot added.</div>
+
+            <div class="loot-table">
+                <div class="loot-header">Name</div>
+                <div class="loot-header">Value</div>
+                <div class="loot-header">Quantity</div>
+                <div class="loot-header">Remove</div>
+
+                <div id="lootRows"></div>
+            </div>
+
+            <p id="listTotalRow" class="total-row hidden">Total Loot: <span id="listTotalValue">$0.00</span></p>
+        </section>
+
+        <section class="panel">
+            <h2>Split Loot</h2>
+            <button id="splitBtn" disabled>Split Loot</button>
+            <div id="splitResults" class="results hidden">
+                <p>Total Loot <span id="splitTotalValue">$0.00</span></p>
+                <p>Loot Per Party Member <span id="perPersonValue">$0.00</span></p>
+            </div>
+            <button id="resetBtn" class="reset-button">Reset All</button>
+        </section>
+
+        <section class="panel reflection">
+            <h2>Logic Explanation</h2>
+            <p>
+                My website uses the lootItems array as main storage for loot data, and partySize keeps the current party number.
+                In Phase 3 this data also gets saved, so refreshing the page does not just delete everything.
+                The saveState function saves one object with loot and partySize inside localStorage.
+            </p>
+            <p>
+                When the page loads up the restoreState checks if saved data exists. If it does it reads saved information,
+                restores party size back into the input and loops through saved loot items.
+                It also checks so items in the save storage array have name, value and quantity before it gets pushed
+                back into lootItems.
+            </p>
+            <p>
+                JSON.stringify is used because localStorage can only save text, so the object has to become a string.
+                JSON.parse is used when the page opens again to turn that string back into usable javascript data.
+                The parse part is inside try and catch so if saved data is broken the app goes back to default state instead of crashing.
+            </p>
+            <p>
+                For debugging I would put a breakpoint in restoreState after JSON.parse but before updateUI.
+                At that moment I can look at parsed saved object to check what loot was restored and step through the loop that validates every item.
+                This shows if the state is ready before the interface is rendered.
+            </p>
+            <p>
+                The Reset All button is added because saved data now stays after refresh so it allows user to start over on purpose.
+                It clears lootItems, puts party size back to 1, removes saved localStorage object, and then updateUI shows empty state again.
+                This phase uses HTML, CSS and JavaScript together with arrays, objects, loops, validation, JSON and localStorage
+                to make the app work more like a real web application.
+            </p>
+        </section>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
